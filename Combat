@@ -1,0 +1,145 @@
+import random
+import time
+def Lifeline(Play_hp, Plaw_hp, Plaw_atk, Play_atk, Play_def, Play_Heal, Time_s, Plaw_gauge, Play_gauge, uLoop):
+  
+  #Looping
+  while Play_hp > 0 or Plaw_hp > 0:
+    print("Player hp:  " + str(Play_hp) + ("\nPlayer gauge points: ") + str(Play_gauge) + "\n\nPlawsmo hp:  " + str(Plaw_hp) + ("\nPlawsmo gauge points: ") + str(Plaw_gauge))
+
+    #Considering victory
+    if Plaw_hp < 1:
+      time.sleep(Time_s)
+      print("\nYou won!")
+      break
+    elif Play_hp < 1:
+      time.sleep(Time_s)
+      print("\nYou have died")
+      break
+
+    #Considering Plawsmo's move
+    time.sleep(Time_s)
+    Plaw_move = (random.randint(1,3))
+    if Plaw_move == 1:
+      Plaw_atk = (random.randint(1,3))
+      Play_hp = (int(Play_hp) - int(Plaw_atk))
+      print("\nThe Plawsmo attacks you!")
+      time.sleep(Time_s)
+      print("You now have " + str(Play_hp) + "hp")
+    elif Plaw_move == 2:
+      Plaw_heal = (random.randint(2,5))
+      Plaw_hp = int(Plaw_hp) + int(Plaw_heal)
+      if Plaw_hp > 20:
+        Plaw_hp = 20
+        print("\nThe Plawsmo heals!")
+        time.sleep(Time_s)
+        print("It now has: " + str(Plaw_hp) + "hp")
+      else:
+        print("\nThe Plawsmo heals!")
+        time.sleep(Time_s)
+        print("It now has: " + str(Plaw_hp) + "hp") 
+    elif Plaw_move == 3:
+      if int(Plaw_gauge) < 5:
+        Plaw_move = (random.randint(1,3))
+        if Plaw_move == 1:
+          Plaw_atk = (random.randint(1,3))
+          Play_hp = (int(Play_hp) - int(Plaw_atk))
+          print("\nThe Plawsmo attacks you!")
+          time.sleep(Time_s)
+          print("You now have " + str(Play_hp) + "hp")
+        elif Plaw_move == 2:
+          Plaw_heal = (random.randint(2,5))
+          Plaw_hp = int(Plaw_hp) + int(Plaw_heal)
+          print("\nThe Plawsmo heals!")
+          time.sleep(Time_s)
+          print("It now has: " + str(Plaw_hp) + "hp")
+      else:
+        Plaw_atk = (random.randint(3, 6))
+        Play_hp = (int(Play_hp) - int(Plaw_atk))
+        Plaw_gauge = (int(Plaw_gauge) - 5)
+        print("\nThe Plawsmo readies something big!")
+        time.sleep(Time_s)
+        print("It grows and...")
+        time.sleep(Time_s)
+        print("Launches a large slime ball at you!")
+        time.sleep(Time_s)
+        print("You now have " + str(Play_hp) + "hp")
+
+    print("\nWhat do you do?")
+    time.sleep(Time_s)
+    print("\n\n(a) Attack\n\n(d) Defend\n\n(h) Heal\n\n(u) Ultimate (-5 gauge points)")
+    action = input("\nYou: ")
+    
+    #Considering victory
+    if Plaw_hp < 1:
+      time.sleep(Time_s)
+      print("\nYou won!\n")
+      exit(0)
+    elif Play_hp < 1:
+      time.sleep(Time_s)
+      print("\nYou have died")
+      exit(0)
+      
+    #Player's move
+    while uLoop == True:
+      if action == "a":
+        Plaw_hp = (int(Plaw_hp) - int(Play_atk))
+        print("\n")
+        uLoop = False
+      elif action == "d":
+        Plaw_atk = (random.randint(2,4))
+        Plaw_atk = (int(Plaw_atk) - int(Play_def))
+        print("\n")
+        uLoop = False
+      elif action == "h":
+        Play_hp = (int(Play_hp) + int(Play_Heal))
+        if Play_hp > 30:
+          Play_hp = 30
+          print("\n")
+          uLoop = False
+        else:
+          print("\n")
+          uLoop = False
+      elif action == "u":
+        if Play_gauge >= 5:
+          Play_atk = random.randint(5,9)
+          Plaw_hp = (int(Plaw_hp) - int(Play_atk))
+          print("\n")
+          Play_gauge = int(Play_gauge) - 5
+          uLoop = False
+        else:
+          while action == "u":
+            print("You don't have enough gauge points")
+            time.sleep(Time_s)
+            print("Please choose another move")
+            uLoop = True
+            time.sleep(Time_s)
+            print("\nWhat do you do?\n\n(a) Attack\n\n(d) Defend\n\n(h) Heal\n\n(u) Ultimate (-5 gauge points)")
+            action = input("\nYou: ")
+          
+      elif action != ["a", "d", "h", "u"]:
+        print("That is not a valid input")
+        time.sleep(Time_s)
+        print("Please type 'a', 'h' or 'd'")
+        uLoop = False
+    else:
+      uLoop = True
+    uLoop = True
+    Plaw_gauge = int(Plaw_gauge) + 2
+    Play_gauge = int(Play_gauge) + 2
+    if Play_gauge > 10:
+      Play_gauge = 10
+    if Plaw_gauge > 10:
+      Plaw_gauge = 10
+
+#THE GAME
+Lifeline(
+Play_hp = 30,
+Plaw_hp = 20,
+Play_atk = (random.randint(2,6)),
+Plaw_atk = (random.randint(2,4)),
+Play_def = (random.randint(1,2)),
+Play_Heal = (random.randint(2,5)),
+Time_s = 1,
+Plaw_gauge = 10,
+Play_gauge = 10,
+uLoop = True)
